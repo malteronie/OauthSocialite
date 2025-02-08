@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\SocialiteAuthController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -12,11 +15,22 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Auth::routes();
 
 Route::get('/', function () {
     return view('welcome');
+})->name('home');
+
+Route::controller(SocialiteAuthController::class)->group(function(){
+    Route::get('oauth/redirect', 'redirect')->name('oauth.redirect');
+    Route::get('oauth/callback', 'authenticate');
 });
 
-Auth::routes();
+Route::get('/dashboard', function(){
+    return view('dashboard');
+})->name('dashboard');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('/auth/redirect', function(){
+    return Socialite::driver('passport')->redirect();
+});
