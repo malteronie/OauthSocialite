@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\SocialiteAuthController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -34,3 +36,17 @@ Route::get('/dashboard', function(){
 Route::get('/auth/redirect', function(){
     return Socialite::driver('passport')->redirect();
 });
+// Route::get('oauth/callback', function (Request $request) {
+//     $state = $request->session()->pull('state');
+    
+ 
+//     $response = Http::asForm()->post('http://localhost:8000/oauth/token', [
+//         'grant_type' => 'authorization_code',
+//         'client_id' => env('client-id'),
+//         'client_secret' => env('client-secret'),
+//         'redirect_uri' => 'http://localhost8001/oauth/callback',
+//         'code' => $request->code,
+//     ]);
+//  dd($response);
+//     return $response->json();
+// });

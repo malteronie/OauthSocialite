@@ -9,21 +9,21 @@ use Laravel\Socialite\Two\AbstractProvider;
 class CustomPassportProvider extends AbstractProvider implements ProviderInterface
 {
     protected $scopeSeparator = ' ';
-    
+    protected $stateless = true;
     /**
      * URL d'authentification OAuth
      */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase(config('services.passport.url').'/oauth/authorize', $state);
+        return $this->buildAuthUrlFromBase('http://localhost:8000/oauth/authorize', $state);
     }
-
+    
     /**
      * URL pour récupérer le token
      */
     protected function getTokenUrl()
     {
-        return config('services.passport.url').'/oauth/token';
+        return 'http://localhost:8000/oauth/token';
     }
 
     /**
@@ -31,7 +31,8 @@ class CustomPassportProvider extends AbstractProvider implements ProviderInterfa
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get(config('services.passport.url').'/api/user', [
+        dd($token);
+        $response = $this->getHttpClient()->get('http://localhost:8000/api/user', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
                 'Accept' => 'application/json',
@@ -46,11 +47,11 @@ class CustomPassportProvider extends AbstractProvider implements ProviderInterfa
      */
     protected function mapUserToObject(array $user)
     {
+        dd($user);
         return (new User())->setRaw($user)->map([
             'id'    => $user['id'],
             'name'  => $user['name'],
             'email' => $user['email'],
-            'avatar' => $user['avatar'] ?? null,
         ]);
     }
 

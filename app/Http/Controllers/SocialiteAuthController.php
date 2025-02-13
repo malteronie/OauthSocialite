@@ -8,27 +8,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
-
+use Illuminate\Support\Str;
 class SocialiteAuthController extends Controller
 {
-    public function redirect(){
+    public function redirect(Request $request){
         return Socialite::driver('passport')->redirect();
-        
     }
 
     public function authenticate(){
-        try {
-            $socialiteUser = Socialite::driver('passport')->user();
-            $user = User::firstOrCreate(
-                ['email' => strtolower($socialiteUser->getEmail())],
-                ['name' => $socialiteUser->getNickname(), 'password' => Hash::make(time())]
-            );
-            Auth::login($user);
-            return to_route('dashboard');
-        } catch (Exception $exception){
-            dd(Socialite::driver('passport')->user());
-            return to_route('home');
-            
-        }
+        $user = Socialite::driver('passport')->user();
+    
+    // Obtenez le jeton d'accès
+        $accessToken = $user->token;
+    
+    // Utilise le jeton d'accès dans ton application
+    // Par exemple, tu peux l'enregistrer dans la session
+        session(['access_token' => $accessToken]);
+
+    // Redirige l'utilisateur vers une page sécurisée
+        return redirect('/dashboard');
     }
 }
