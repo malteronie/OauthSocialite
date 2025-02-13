@@ -16,16 +16,31 @@ class SocialiteAuthController extends Controller
     }
 
     public function authenticate(){
-        $user = Socialite::driver('passport')->user();
-    
-    // Obtenez le jeton d'accès
-        $accessToken = $user->token;
-    dd($user, $accessToken);
-    // Utilise le jeton d'accès dans ton application
-    // Par exemple, tu peux l'enregistrer dans la session
-        session(['access_token' => $accessToken]);
-
-    // Redirige l'utilisateur vers une page sécurisée
-        return redirect('/dashboard');
+         try {
+            // return Socialite::driver('passport')->stateless()->user();
+            $socialiteUser = Socialite::driver('passport')->user();
+            $user = User::create(
+                ['email' => strtolower($socialiteUser->getEmail()), 'name' => $socialiteUser->getName(), 'password' => Hash::make(time()), ],
+            );
+            Auth::login($user);
+            return to_route('dashboard');
+        } catch (Exception $exception){
+            // dd($exception);
+            dd($exception);
+            dd(Socialite::driver('passport')->user());
+            return to_route('home');
+        }
     }
 }
+
+
+
+// $user = Socialite::driver('passport')->user();
+    
+//     // Obtenez le jeton d'accès
+//         $accessToken = $user->token;
+//     // dd($user, $accessToken);
+//         session(['access_token' => $accessToken]);
+
+//     // Redirige l'utilisateur vers une page sécurisée
+//         return redirect('/dashboard');
