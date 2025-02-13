@@ -20,7 +20,7 @@ class SocialiteAuthController extends Controller
     
     // Obtenez le jeton d'accès
         $accessToken = $user->token;
-    
+    dd($user, $accessToken);
     // Utilise le jeton d'accès dans ton application
     // Par exemple, tu peux l'enregistrer dans la session
         session(['access_token' => $accessToken]);

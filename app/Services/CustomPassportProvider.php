@@ -31,7 +31,6 @@ class CustomPassportProvider extends AbstractProvider implements ProviderInterfa
      */
     protected function getUserByToken($token)
     {
-        dd($token);
         $response = $this->getHttpClient()->get('http://localhost:8000/api/user', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
@@ -47,7 +46,6 @@ class CustomPassportProvider extends AbstractProvider implements ProviderInterfa
      */
     protected function mapUserToObject(array $user)
     {
-        dd($user);
         return (new User())->setRaw($user)->map([
             'id'    => $user['id'],
             'name'  => $user['name'],
