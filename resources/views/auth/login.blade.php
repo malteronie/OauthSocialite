@@ -63,7 +63,9 @@
                                     </a>
                                 @endif
                             </div><br>
-                            <a href="{{route('oauth.redirect')}}"><img src="{{asset('oauth.png')}}" alt="oauth"></a>
+                            <center>
+                                <label>Se connecter avec : </label>
+                                <a href="{{route('oauth.redirect')}}"><img src="{{asset('oauth.png')}}" style="width: 50px; height:50px" alt="oauth"></a></center>
                         </div>
                     </form>
                 </div>

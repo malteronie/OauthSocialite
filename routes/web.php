@@ -33,9 +33,7 @@ Route::get('/dashboard', function(){
 })->name('dashboard');
 
 
-Route::get('/auth/redirect', function(){
-    return Socialite::driver('passport')->redirect();
-});
+
 // Route::get('oauth/callback', function (Request $request) {
 //     $state = $request->session()->pull('state');
     

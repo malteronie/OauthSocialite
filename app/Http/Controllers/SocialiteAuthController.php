@@ -4,14 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Socialite\Facades\Socialite;
-use Illuminate\Support\Str;
 class SocialiteAuthController extends Controller
 {
-    public function redirect(Request $request){
+    public function redirect(){
         return Socialite::driver('passport')->redirect();
     }
 
@@ -19,8 +17,9 @@ class SocialiteAuthController extends Controller
          try {
             // return Socialite::driver('passport')->stateless()->user();
             $socialiteUser = Socialite::driver('passport')->user();
-            $user = User::create(
-                ['email' => strtolower($socialiteUser->getEmail()), 'name' => $socialiteUser->getName(), 'password' => Hash::make(time()), ],
+            $user = User::firstOrCreate(
+                ['email' => strtolower($socialiteUser->getEmail())],
+                ['name' => $socialiteUser->getName(), 'password' => Hash::make(time()), ],
             );
             Auth::login($user);
             return to_route('dashboard');
