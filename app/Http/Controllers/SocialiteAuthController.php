@@ -10,7 +10,10 @@ use Laravel\Socialite\Facades\Socialite;
 class SocialiteAuthController extends Controller
 {
     public function redirect(){
-        return Socialite::driver('passport')->redirect();
+        $authUrl = Socialite::driver('passport')->redirect()->getTargetUrl();
+        $redirectTo = urlencode('https://localhost:8001/oauth/callback'); 
+        // dd($authUrl . '&state=' . $redirectTo); 
+        return redirect()->to($authUrl . '&state=' . $redirectTo);
     }
 
     public function authenticate(){

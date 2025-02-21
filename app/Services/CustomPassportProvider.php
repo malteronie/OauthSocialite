@@ -15,7 +15,7 @@ class CustomPassportProvider extends AbstractProvider implements ProviderInterfa
      */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase('http://localhost:8000/oauth/authorize', $state);
+        return $this->buildAuthUrlFromBase('http://localhost:8002/oauth/authorize', $state);
     }
     
     /**
@@ -23,7 +23,7 @@ class CustomPassportProvider extends AbstractProvider implements ProviderInterfa
      */
     protected function getTokenUrl()
     {
-        return 'http://localhost:8000/oauth/token';
+        return 'http://localhost:8002/oauth/token';
     }
 
     /**
@@ -31,7 +31,7 @@ class CustomPassportProvider extends AbstractProvider implements ProviderInterfa
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get('http://localhost:8000/api/user', [
+        $response = $this->getHttpClient()->get('http://localhost:8002/api/user', [
             'headers' => [
                 'Authorization' => 'Bearer '.$token,
                 'Accept' => 'application/json',
