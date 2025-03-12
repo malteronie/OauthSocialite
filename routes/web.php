@@ -17,6 +17,7 @@ use Laravel\Socialite\Facades\Socialite;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Auth::routes();
 
 Route::get('/', function () {
@@ -24,13 +25,33 @@ Route::get('/', function () {
 })->name('home');
 
 Route::controller(SocialiteAuthController::class)->group(function(){
-    Route::get('oauth/redirect', 'redirect')->name('oauth.redirect');
-    Route::get('oauth/callback', 'authenticate');
+   
+    Route::get('/oauth/callback', 'authenticate')->name('oauth.callback');
+    Route::get('/oauth/redirect', 'redirect')->name('oauth.redirect');
 });
 
-Route::get('/dashboard', function(){
-    return view('dashboard');
-})->name('dashboard');
+
+Route::middleware(['auth:web_app3'])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
+// Route::get('/app/callback', function (Request $request) {
+//     // Récupérer le token de l’URL
+//     $token = $request->query('token');
+//     dd($request);
+//     if (!$token) {
+//         return redirect('/login')->withErrors(['error' => 'Échec de l’authentification']);
+//     }
+
+//     // Stocker le token dans la session ou le système de gestion d'authentification
+//     session(['access_token' => $token]);
+
+//     // Rediriger l’utilisateur vers le tableau de bord
+//     return redirect('/dashboard');
+// })->name('app.callback');
+
+// Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('logout');
 
 
 
