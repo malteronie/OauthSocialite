@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\SocialiteAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,7 @@ Route::controller(SocialiteAuthController::class)->group(function(){
     Route::get('/oauth/redirect', 'redirect')->name('oauth.redirect');
 });
 
+Route::get('/logout', [LoginController::class, 'logout'])->name("logout");
 
 Route::middleware(['auth:web_app3'])->group(function () {
     Route::get('/dashboard', function () {

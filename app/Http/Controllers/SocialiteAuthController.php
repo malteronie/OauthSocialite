@@ -15,31 +15,19 @@ class SocialiteAuthController extends Controller
         $redirectUri = urlencode(route('oauth.callback')); // URL de retour
         return redirect("http://localhost:8002/oauth/redirect?redirect_uri={$redirectUri}");
     }
-    public function g(Request $request)
-    {
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
     
-        $redirectUri = urlencode(route('oauth.callback')); // URL de retour après authentification
-    
-        // Construit l’URL de redirection vers App2 avec le paramètre state
-        $authUrl = "http://localhost:8002/oauth/redirect?state={$redirectUri}";
-    
-        return redirect($authUrl);
-    }
     public function authenticate(Request $request){
         $token = $request->query('token');
         if (!$token) {
             return redirect('/')->withErrors(['error' => 'Token is missing']);
         }
-
+        
         // Stocker le token en session
         session(['access_token' => $token]);
 
         // Récupérer les infos utilisateur depuis App 2
         $response = Http::withToken($token)->get('http://localhost:8002/api/user');
         // dd($response);
-
         if ($response->failed()) {
             
             return redirect('/')->withErrors(['error' => 'Failed to fetch user data']);
@@ -85,3 +73,17 @@ class SocialiteAuthController extends Controller
 
 //     // Redirige l'utilisateur vers une page sécurisée
 //         return redirect('/dashboard');
+
+
+// public function g(Request $request)
+//     {
+//         $request->session()->invalidate();
+//         $request->session()->regenerateToken();
+    
+//         $redirectUri = urlencode(route('oauth.callback')); // URL de retour après authentification
+    
+//         // Construit l’URL de redirection vers App2 avec le paramètre state
+//         $authUrl = "http://localhost:8002/oauth/redirect?state={$redirectUri}";
+    
+//         return redirect($authUrl);
+//     }

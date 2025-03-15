@@ -42,10 +42,10 @@ class LoginController extends Controller
     }
 
     // Redéfinition de la méthode de déconnexion
-    // public function logout(Request $request) {
-
-    //     Auth::logout();
-    //     Session::flush(); // Supprime toutes les sessions
-    //     return redirect('/'); // Redirige vers la page de connexion
-    // }
+    public function logout(Request $request) {
+        // dd(session('access_token'));
+        Auth::logout();
+        Session::flush(); // Supprime toutes les sessions
+        return redirect('/login'); // Redirige vers la page de connexion
+    }
 }
